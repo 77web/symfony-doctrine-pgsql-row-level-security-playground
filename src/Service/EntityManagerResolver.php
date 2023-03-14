@@ -9,6 +9,7 @@ use Doctrine\Bundle\DoctrineBundle\ManagerConfigurator;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Repository\DefaultRepositoryFactory;
 
 class EntityManagerResolver
 {
@@ -33,9 +34,11 @@ class EntityManagerResolver
                 $defaultConn->getConfiguration(),
                 $defaultConn->getEventManager(),
             );
+            $configuration = $this->defaultEntityManager->getConfiguration();
+            $configuration->setRepositoryFactory(new DefaultRepositoryFactory());
             $em = new EntityManager(
                 $conn,
-                $this->defaultEntityManager->getConfiguration(),
+                $configuration,
             );
             $this->managerConfigurator->configure($em);
             $this->managers[$key] = $em;
