@@ -25,8 +25,11 @@ class EntityManagerResolver
         $key = $member->getUsername();
         if (!isset($this->managers[$key])) {
             $defaultConn = $this->defaultEntityManager->getConnection();
+            $params = array_merge($defaultConn->getParams(), ['user' => $key, 'password' => $key]);
+            unset($params['url']);
+
             $conn = DriverManager::getConnection(
-                array_merge($defaultConn->getParams(), ['username' => $key, 'password' => $key]),
+                $params,
                 $defaultConn->getConfiguration(),
                 $defaultConn->getEventManager(),
             );
