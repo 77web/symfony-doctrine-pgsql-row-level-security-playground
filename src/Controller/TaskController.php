@@ -7,11 +7,11 @@ namespace App\Controller;
 use App\Entity\Member;
 use App\Entity\Task;
 use App\Service\EntityManagerResolver;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TaskController
+class TaskController extends AbstractController
 {
     #[Route('/{member}', name: 'members_tasks')]
     public function list(
