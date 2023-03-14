@@ -8,8 +8,9 @@ use App\Entity\Member;
 use App\Entity\Task;
 use App\Service\EntityManagerResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class TaskController extends AbstractController
 {
@@ -17,11 +18,12 @@ class TaskController extends AbstractController
     public function list(
         Member $member,
         EntityManagerResolver $emResolver,
-    ): JsonResponse {
+        SerializerInterface $serializer,
+    ): Response {
         $em = $emResolver->resolve($member);
 
-        return new JsonResponse(
-            $em->getRepository(Task::class)->findAll(),
+        return new Response(
+            $serializer->serialize($em->getRepository(Task::class)->findAll(), 'json'),
         );
     }
 }
